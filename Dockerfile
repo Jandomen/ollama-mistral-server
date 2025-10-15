@@ -4,9 +4,8 @@ FROM ollama/ollama:latest
 # Exponemos el puerto
 EXPOSE 11434
 
-# Copiamos el script de inicio
-COPY start.sh /start.sh
-RUN chmod +x /start.sh
+# Descargamos el modelo mistral durante la construcción
+RUN ollama pull mistral
 
-# Usamos el script como entrypoint
-CMD ["/start.sh"]
+# Ejecutamos el comando para iniciar el servidor Ollama
+CMD ["serve"]
