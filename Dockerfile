@@ -1,3 +1,7 @@
 FROM ollama/ollama:latest
+
+# Exponemos el puerto
 EXPOSE 11434
-CMD ["serve"]
+
+# Comando de inicio: descargar modelo y luego iniciar servidor
+CMD ollama pull mistral && serve
