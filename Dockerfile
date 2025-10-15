@@ -4,5 +4,5 @@ FROM ollama/ollama:latest
 # Exponemos el puerto
 EXPOSE 11434
 
-# Inicia Ollama y descarga el modelo al mismo tiempo
-CMD ollama serve --pull mistral
+# Forma exec para CMD, evita problemas con /bin/sh
+CMD ["ollama", "serve", "--pull", "mistral"]
