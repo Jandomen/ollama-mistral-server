@@ -17,4 +17,4 @@ RUN chmod +x start.sh
 EXPOSE 11434
 
 # Comando de arranque
-CMD ["./start.sh"]
+CMD ["bash", "-c", "/app/start.sh"]
