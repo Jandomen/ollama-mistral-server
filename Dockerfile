@@ -4,5 +4,9 @@ FROM ollama/ollama:latest
 # Exponemos el puerto
 EXPOSE 11434
 
-# Solo pasamos los argumentos al entrypoint de Ollama
-CMD ["serve", "--pull", "mistral"]
+# Copiamos el script de inicio
+COPY start.sh /start.sh
+RUN chmod +x /start.sh
+
+# Usamos el script como entrypoint
+CMD ["/start.sh"]
