@@ -1,14 +1,15 @@
-#!/bin/sh
+#!/bin/bash
 set -e
 
+MODEL="llama3.2:1b"
+
+echo "🔹 Descargando modelo '$MODEL'..."
+ollama pull "$MODEL"
+
 echo "🚀 Iniciando servidor Ollama..."
-ollama serve &
+ollama serve --port 11434 &
 
-# Espera a que el servidor se inicie
-sleep 5
+sleep 10
 
-echo "🔹 Descargando modelo mistral..."
-ollama pull mistral || true
-
-echo "✅ Servidor listo y modelo cargado. Manteniendo el proceso activo..."
-wait
+echo "🌐 Iniciando servidor Node.js..."
+node server.js
