@@ -11,19 +11,20 @@ const OLLAMA_PORT = 11434;
 // Arrancar Ollama como child process
 const ollama = spawn("ollama", ["serve", "--port", OLLAMA_PORT], { stdio: "inherit" });
 
-async function waitForOllama(retries = 20, delay = 2000) {
+// Función para esperar a Ollama
+async function waitForOllama(retries = 30, delay = 2000) {
   for (let i = 0; i < retries; i++) {
     try {
       const res = await fetch(`http://localhost:${OLLAMA_PORT}/api/health`);
       if (res.ok) return true;
     } catch {}
-    console.log(`Esperando a que Ollama esté listo... (${i + 1}/${retries})`);
+    console.log(`⏳ Esperando a Ollama... (${i + 1}/${retries})`);
     await new Promise(r => setTimeout(r, delay));
   }
   throw new Error("Ollama no respondió después de varios intentos");
 }
 
-// Endpoint de generación de texto
+// Endpoint de generación
 app.post("/api/generate", async (req, res) => {
   try {
     const { model = "llama3.2:1b", prompt } = req.body;
@@ -40,6 +41,7 @@ app.post("/api/generate", async (req, res) => {
   }
 });
 
+// Esperar a Ollama antes de levantar API
 waitForOllama()
   .then(() => {
     app.listen(PORT, () => console.log(`✅ API lista en puerto ${PORT}`));
