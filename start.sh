@@ -7,11 +7,13 @@ echo "🔹 Descargando modelo '$MODEL'..."
 ollama pull "$MODEL"
 
 echo "🚀 Iniciando servidor Ollama..."
-# Ejecutar en foreground con exec para que Docker lo controle
-exec ollama serve --port 11434 &
+ollama serve --port 11434 &
 
 # Esperar a que Ollama esté listo
-sleep 10
+until curl -s http://localhost:11434/api/health > /dev/null; do
+  echo "⏳ Esperando a Ollama..."
+  sleep 2
+done
 
 echo "🌐 Iniciando servidor Node.js..."
 exec node server.js

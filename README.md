@@ -10,7 +10,10 @@ Servidor Docker con Ollama y modelo Mistral, listo para desplegar en Render.
 
 ## 🧪 Probar la API
 ```bash
-curl https://<tu-app>.onrender.com/api/generate -d '{
-  "model": "mistral",
-  "prompt": "Dame una frase motivadora."
+
+curl https://ollama-llama-server.onrender.com/api/generate -d '{
+  "model": "llama3.2:1b",
+  "prompt": "Dame una frase motivadora sobre la programación."
 }'
+
+

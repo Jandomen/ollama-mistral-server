@@ -6,7 +6,7 @@ app.use(express.json());
 
 const OLLAMA_URL = "http://localhost:11434/api/generate";
 
-// Función para verificar si Ollama está listo
+// Función para esperar a Ollama
 async function waitForOllama(retries = 10, delay = 2000) {
   for (let i = 0; i < retries; i++) {
     try {
@@ -19,16 +19,15 @@ async function waitForOllama(retries = 10, delay = 2000) {
   throw new Error("Ollama no respondió después de varios intentos");
 }
 
+// Endpoint para generar texto
 app.post("/api/generate", async (req, res) => {
   try {
     const { model = "llama3.2:1b", prompt } = req.body;
-
     const response = await fetch(OLLAMA_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ model, prompt }),
     });
-
     const data = await response.text();
     res.send(data);
   } catch (error) {
@@ -39,12 +38,9 @@ app.post("/api/generate", async (req, res) => {
 
 const PORT = process.env.PORT || 3000;
 
-// Esperar a que Ollama esté listo antes de levantar el servidor
 waitForOllama()
   .then(() => {
-    app.listen(PORT, () =>
-      console.log(`✅ API lista en el puerto ${PORT}`)
-    );
+    app.listen(PORT, () => console.log(`✅ API lista en el puerto ${PORT}`));
   })
   .catch(err => {
     console.error(err);
