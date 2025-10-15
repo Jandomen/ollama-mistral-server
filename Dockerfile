@@ -1,11 +1,8 @@
 # Imagen base oficial de Ollama
 FROM ollama/ollama:latest
 
-# Descarga el modelo Mistral
-RUN ollama pull mistral
-
-# Expone el puerto donde correrá Ollama
+# Exponemos el puerto
 EXPOSE 11434
 
-# Inicia Ollama
-CMD ["serve"]
+# Inicia Ollama y descarga el modelo al mismo tiempo
+CMD ollama serve --pull mistral
