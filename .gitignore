@@ -1,0 +1,4 @@
+# Archivos temporales y de sistema
+*.log
+.DS_Store
+.env
