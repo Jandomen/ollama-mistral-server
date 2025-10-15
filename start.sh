@@ -1,14 +1,14 @@
 #!/bin/sh
 set -e
 
-echo "🔹 Iniciando servidor Ollama en segundo plano..."
+echo "🚀 Iniciando servidor Ollama..."
 ollama serve &
 
-# Esperar a que el servidor arranque
+# Espera a que el servidor se inicie
 sleep 5
 
 echo "🔹 Descargando modelo mistral..."
 ollama pull mistral || true
 
-echo "🚀 Servidor listo y modelo cargado."
+echo "✅ Servidor listo y modelo cargado. Manteniendo el proceso activo..."
 wait

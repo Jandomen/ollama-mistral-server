@@ -1,8 +1,9 @@
 services:
   - type: web
-    name: ollama-mistral
+    name: ollama-mistral-server
     env: docker
     plan: free
     autoDeploy: true
-    ports:
-      - 11434
+    envVars:
+      - key: PORT
+        value: 11434
