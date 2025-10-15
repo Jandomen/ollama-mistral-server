@@ -1,6 +1,14 @@
 FROM ollama/ollama:latest
 
+# Expone el puerto de Ollama
 EXPOSE 11434
 
-# CMD en forma exec, descarga modelo y luego inicia el servidor
-CMD ["sh", "-c", "ollama pull mistral && serve"]
+# Copia el script de inicio
+COPY start.sh /start.sh
+RUN chmod +x /start.sh
+
+# Anula el ENTRYPOINT de la imagen base de Ollama
+ENTRYPOINT []
+
+# Usa el script como comando de inicio
+CMD ["/start.sh"]
