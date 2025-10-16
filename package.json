@@ -1,6 +1,7 @@
 {
-  "name": "ollama-llama-server",
+  "name": "ollama-mistral-server",
   "version": "1.0.0",
+  "description": "Ollama server with Node.js API",
   "main": "server.js",
   "type": "module",
   "scripts": {
