@@ -5,8 +5,9 @@ RUN apt-get update && apt-get install -y nodejs npm curl
 WORKDIR /app
 COPY . .
 
-RUN chmod +x server.js
+RUN chmod +x start.sh server.js
 
 EXPOSE 3000
 
-CMD ["node", "server.js"]
+ENTRYPOINT []  # Anula el entrypoint predeterminado para evitar el error
+CMD ["./start.sh"]

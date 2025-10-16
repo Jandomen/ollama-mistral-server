@@ -8,8 +8,11 @@ app.use(express.json());
 const PORT = process.env.PORT || 3000;
 const OLLAMA_PORT = 11434;
 
-// Arrancar Ollama como child process
-const ollama = spawn("ollama", ["serve", "--port", OLLAMA_PORT], { stdio: "inherit" });
+// Arrancar Ollama con límite de modelos
+const ollama = spawn("ollama", ["serve", "--port", OLLAMA_PORT], {
+  stdio: "inherit",
+  env: { ...process.env, OLLAMA_MAX_LOADED_MODELS: "1" } // Solo un modelo en RAM
+});
 
 // Función para esperar a Ollama
 async function waitForOllama(retries = 30, delay = 2000) {
@@ -27,7 +30,7 @@ async function waitForOllama(retries = 30, delay = 2000) {
 // Endpoint de generación
 app.post("/api/generate", async (req, res) => {
   try {
-    const { model = "llama3.2:1b", prompt } = req.body;
+    const { model = "llama3.2:1b", prompt } = req.body; // Modelo por defecto
     const response = await fetch(`http://localhost:${OLLAMA_PORT}/api/generate`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -41,7 +44,6 @@ app.post("/api/generate", async (req, res) => {
   }
 });
 
-// Esperar a Ollama antes de levantar API
 waitForOllama()
   .then(() => {
     app.listen(PORT, () => console.log(`✅ API lista en puerto ${PORT}`));
