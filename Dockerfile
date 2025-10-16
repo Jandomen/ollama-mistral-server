@@ -1,19 +1,26 @@
-FROM ollama/ollama:latest
+# Usamos imagen oficial de Node.js
+FROM node:20-slim
 
-# Install Node.js, npm, and curl
-RUN apt-get update && apt-get install -y nodejs npm curl
+# Instalar curl y otras dependencias necesarias
+RUN apt-get update && apt-get install -y curl bash && rm -rf /var/lib/apt/lists/*
 
+# Configuramos el directorio de la app
 WORKDIR /app
-COPY . .
 
-# Install Node.js dependencies
+# Copiamos package.json y package-lock.json
+COPY package*.json ./
+
+# Instalamos dependencias de Node.js
 RUN npm install
 
-# Make scripts executable
+# Copiamos el resto del código
+COPY . .
+
+# Hacemos ejecutables los scripts
 RUN chmod +x start.sh server.js
 
-# Expose ports for Node.js (3000) and Ollama (11434)
-EXPOSE 3000 11434
+# Exponemos el puerto de Node.js (Render solo necesita uno)
+EXPOSE 3000
 
-ENTRYPOINT []
+# Comando por defecto
 CMD ["./start.sh"]

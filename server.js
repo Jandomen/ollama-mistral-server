@@ -7,26 +7,11 @@ app.use(express.json());
 const PORT = process.env.PORT || 3000;
 const OLLAMA_PORT = 11434;
 
-// Health check endpoint for Render
 app.get("/health", (req, res) => res.status(200).send("OK"));
 
-// Función para esperar a Ollama
-async function waitForOllama(retries = 30, delay = 2000) {
-  for (let i = 0; i < retries; i++) {
-    try {
-      const res = await fetch(`http://localhost:${OLLAMA_PORT}/api/health`);
-      if (res.ok) return true;
-    } catch {}
-    console.log(`⏳ Esperando a Ollama... (${i + 1}/${retries})`);
-    await new Promise((r) => setTimeout(r, delay));
-  }
-  throw new Error("Ollama no respondió después de varios intentos");
-}
-
-// Endpoint de generación
 app.post("/api/generate", async (req, res) => {
   try {
-    const { model = "qwen2.5:0.5b", prompt } = req.body; // Modelo por defecto
+    const { model = "mistral-mini", prompt } = req.body;
     const response = await fetch(`http://localhost:${OLLAMA_PORT}/api/generate`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -39,6 +24,18 @@ app.post("/api/generate", async (req, res) => {
     res.status(500).send({ error: "Error al conectar con Ollama" });
   }
 });
+
+async function waitForOllama(retries = 30, delay = 2000) {
+  for (let i = 0; i < retries; i++) {
+    try {
+      const res = await fetch(`http://localhost:${OLLAMA_PORT}/api/health`);
+      if (res.ok) return true;
+    } catch {}
+    console.log(`⏳ Esperando a Ollama... (${i + 1}/${retries})`);
+    await new Promise(r => setTimeout(r, delay));
+  }
+  throw new Error("Ollama no respondió después de varios intentos");
+}
 
 waitForOllama()
   .then(() => {

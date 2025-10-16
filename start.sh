@@ -1,15 +1,24 @@
 #!/bin/bash
 set -e
 
-MODEL="qwen2.5:0.5b"
+MODEL="mistral-mini"
+PORT="${PORT:-3000}"
+OLLAMA_PORT=11434
+
+echo "🔹 Verificando si el modelo '$MODEL' ya está descargado..."
+if ! ollama list | grep -q "$MODEL"; then
+  echo "⬇️ Descargando modelo '$MODEL'..."
+  ollama pull "$MODEL"
+fi
 
 echo "🚀 Iniciando servidor Ollama..."
-ollama serve > ollama.log 2>&1 &
+# Escucha en todas las interfaces para que Node.js pueda conectarse
+ollama serve --host 0.0.0.0 > ollama.log 2>&1 &
 
-# Esperar a que Ollama esté listo antes de continuar
+# Esperar a que Ollama esté listo
 timeout=60
 count=0
-until curl -s http://localhost:11434/api/health > /dev/null; do
+until curl -s http://localhost:${OLLAMA_PORT}/api/health > /dev/null; do
   if [ $count -ge $timeout ]; then
     echo "❌ Timeout esperando Ollama"
     cat ollama.log
@@ -21,13 +30,6 @@ until curl -s http://localhost:11434/api/health > /dev/null; do
 done
 echo "✅ Servidor Ollama listo"
 
-# Verifica si el modelo ya existe
-if ! ollama list | grep -q "$MODEL"; then
-  echo "🔹 Descargando modelo '$MODEL'..."
-  ollama pull "$MODEL"
-else
-  echo "✅ Modelo '$MODEL' ya está disponible"
-fi
-
+# Iniciar Node.js
 echo "🌐 Iniciando servidor Node.js en puerto $PORT..."
 exec node server.js
