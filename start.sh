@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-MODEL="tinyllama"
+MODEL="qwen2.5:0.5b"
 
 echo "🚀 Iniciando servidor Ollama..."
 ollama serve > ollama.log 2>&1 &

@@ -26,7 +26,7 @@ async function waitForOllama(retries = 30, delay = 2000) {
 // Endpoint de generación
 app.post("/api/generate", async (req, res) => {
   try {
-    const { model = "tinyllama", prompt } = req.body; // Modelo por defecto
+    const { model = "qwen2.5:0.5b", prompt } = req.body; // Modelo por defecto
     const response = await fetch(`http://localhost:${OLLAMA_PORT}/api/generate`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
