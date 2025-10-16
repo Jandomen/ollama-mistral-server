@@ -9,5 +9,5 @@ RUN chmod +x start.sh server.js
 
 EXPOSE 3000
 
-ENTRYPOINT []  # Anula el entrypoint predeterminado para evitar el error
+ENTRYPOINT []  # Crucial para evitar el error "unknown command node"
 CMD ["./start.sh"]
