@@ -1,4 +1,4 @@
-# Base: Ollama oficial con todo preinstalado
+# Base: imagen oficial de Ollama
 FROM ollama/ollama:latest
 
 # Instalar Node.js, npm y curl
@@ -19,8 +19,8 @@ COPY . .
 # Hacer ejecutables los scripts
 RUN chmod +x start.sh server.js
 
-# Exponer puerto de Node.js (Render solo necesita uno)
+# Exponer el puerto de Node.js (Render solo necesita uno)
 EXPOSE 3000
 
-# Comando por defecto
-CMD ["./start.sh"]
+# Ejecutar start.sh con bash
+CMD ["bash", "./start.sh"]
