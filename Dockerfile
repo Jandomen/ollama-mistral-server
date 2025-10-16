@@ -7,7 +7,7 @@ COPY . .
 
 RUN chmod +x start.sh server.js
 
-EXPOSE 3000
+EXPOSE 3000 11434
 
-ENTRYPOINT []  # Crucial para evitar el error "unknown command node"
+ENTRYPOINT []
 CMD ["./start.sh"]

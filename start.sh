@@ -4,7 +4,7 @@ set -e
 MODEL="llama3.2:1b"
 
 echo "🚀 Iniciando servidor Ollama..."
-ollama serve --port 11434 &
+ollama serve &
 
 # Esperar a que Ollama esté listo antes de continuar
 timeout=60
