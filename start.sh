@@ -6,7 +6,7 @@ PORT="${PORT:-3000}"
 OLLAMA_PORT=11434
 
 echo "🚀 Iniciando servidor Ollama..."
-ollama serve --host 0.0.0.0 > ollama.log 2>&1 &
+ollama serve > ollama.log 2>&1 &
 
 # Esperar a que Ollama esté listo
 timeout=60
