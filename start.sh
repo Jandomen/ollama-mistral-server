@@ -1,19 +1,15 @@
 #!/bin/bash
 set -e
 
-# Modelo ligero
-MODEL="tinyllama:1.1B"
-
-# Puertos
+MODEL="${MODEL:-tinyllama:1.1B}"
 PORT="${PORT:-3000}"
-OLLAMA_PORT=11434
+OLLAMA_PORT="${OLLAMA_PORT:-11434}"
 
-# Iniciar Ollama en background
-echo "🚀 Iniciando servidor Ollama..."
-ollama serve > ollama.log 2>&1 &
+echo "🚀 Iniciando servidor Ollama en puerto $OLLAMA_PORT..."
+ollama serve --port $OLLAMA_PORT > ollama.log 2>&1 &
 
-# Esperar a que Ollama esté listo
-timeout=120  # segundos
+# Esperar a Ollama
+timeout=60
 count=0
 until curl -s http://localhost:${OLLAMA_PORT}/api/health > /dev/null; do
   if [ $count -ge $timeout ]; then
@@ -27,7 +23,7 @@ until curl -s http://localhost:${OLLAMA_PORT}/api/health > /dev/null; do
 done
 echo "✅ Servidor Ollama listo"
 
-# Verificar o descargar el modelo
+# Verificar o descargar modelo
 echo "🔹 Verificando si el modelo '$MODEL' ya está descargado..."
 if ! ollama list | grep -q "$MODEL"; then
   echo "⬇️ Descargando modelo '$MODEL'..."
