@@ -1,15 +1,19 @@
 #!/bin/bash
 set -e
 
-MODEL="mistral-mini"
+# Modelo ligero
+MODEL="tinyllama:1.1B"
+
+# Puertos
 PORT="${PORT:-3000}"
 OLLAMA_PORT=11434
 
+# Iniciar Ollama en background
 echo "🚀 Iniciando servidor Ollama..."
 ollama serve > ollama.log 2>&1 &
 
 # Esperar a que Ollama esté listo
-timeout=60
+timeout=120  # segundos
 count=0
 until curl -s http://localhost:${OLLAMA_PORT}/api/health > /dev/null; do
   if [ $count -ge $timeout ]; then
