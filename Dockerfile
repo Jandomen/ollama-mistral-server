@@ -1,7 +1,7 @@
 # Base: imagen oficial de Ollama
 FROM ollama/ollama:latest
 
-# Eliminar el ENTRYPOINT original (para que no ejecute 'ollama' automáticamente)
+# Eliminar el ENTRYPOINT original
 ENTRYPOINT []
 
 # Instalar Node.js, npm y curl
@@ -25,5 +25,5 @@ RUN chmod +x start.sh server.js
 # Exponer puerto de Node.js (Render solo necesita uno)
 EXPOSE 3000
 
-# Ejecutar tu script de arranque
+# Ejecutar script de arranque
 CMD ["bash", "./start.sh"]
